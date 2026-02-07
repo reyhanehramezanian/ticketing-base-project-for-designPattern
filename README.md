@@ -1,4 +1,5 @@
  بخش اول)تشخیص زیرمسائل و الگوها
+ 
  ۱. زیرمسئله: مدیریت حالت‌ها
  
 - NEW 
@@ -25,7 +26,7 @@
 
 روش اعمال:
 
-۱. ایجاد اینترفیس TicketState با متد handle(TicketContext context).
+۱. ایجاد اینترفیس TicketState با متد handle(TicketContext context)
 
 ۲. پیاده‌سازی کلاس‌های حالت:
 
@@ -131,13 +132,13 @@
 
  فرآیند ایجاد تیکت پیچیده است و شامل:
 
-_انتخاب استراتژی کانال مناسب
+-انتخاب استراتژی کانال مناسب
 
-_انتخاب استراتژی نوع مناسب
+-انتخاب استراتژی نوع مناسب
 
-_تنظیم حالت اولیه
+-تنظیم حالت اولیه
 
-_مقداردهی اولیه سایر ویژگی‌ها
+-مقداردهی اولیه سایر ویژگی‌ها
 
 الگوی انتخابی: 
 
@@ -169,36 +170,46 @@ public Ticket createTicket(String channelType, String ticketType) {
 
 سیستم باید پس از هر تغییر مهم در وضعیت تیکت:
 
-رویداد را ثبت کند.
+-رویداد را ثبت کند.
 
-به سیستم‌های دیگر اطلاع دهد
+-به سیستم‌های دیگر اطلاع دهد.
 
-امکان افزودن سیستم‌های ثبت جدید را فراهم کند
+-امکان افزودن سیستم‌های ثبت جدید را فراهم کند.
 
-الگوی پیشنهادی: Observer Pattern
+الگوی انتخابی: 
+
 الگوی Observer مناسب است زیرا چندین سیستم ممکن است نیاز به اطلاع از تغییرات تیکت داشته باشند.
 
-دلیل انتخاب
-۱. جدا کردن ناهمگام: جدا کردن فرستنده رویداد از دریافت‌کنندگان
-۲. قابلیت گسترش: افزودن Observer جدید بدون تغییر Subject
-۳. یک-به-چند: یک رویداد می‌تواند به چندین سیستم اطلاع دهد
-۴. کاهش وابستگی: Subject و Observer وابستگی کمی به هم دارند
+دلیل انتخاب :
 
-روش اعمال
+۱. جدا کردن ناهمگام: جدا کردن فرستنده رویداد از دریافت‌کنندگان.
+
+۲. قابلیت گسترش: افزودن Observer جدید بدون تغییر Subject
+
+۳. یک-به-چند: یک رویداد می‌تواند به چندین سیستم اطلاع دهد.
+
+۴. کاهش وابستگی: Subject و Observer وابستگی کمی به هم دارند.
+
+روش اعمال :
+
 ۱. ایجاد اینترفیس TicketObserver با متد update(TicketEvent event)
+
 ۲. ایجاد کلاس Ticket به عنوان Subject با قابلیت:
 
-attachObserver(TicketObserver observer)
 
-detachObserver(TicketObserver observer)
+- attachObserver(TicketObserver observer)
 
-notifyObservers(TicketEvent event)
+- detachObserver(TicketObserver observer)
+
+- notifyObservers(TicketEvent event)
+
 ۳. پیاده‌سازی Observer‌های مختلف:
 
-FileLoggerObserver: ثبت در فایل log
+- FileLoggerObserver: ثبت در فایل log
 
-DatabaseLoggerObserver: ثبت در پایگاه داده
+- DatabaseLoggerObserver: ثبت در پایگاه داده
 
-NotificationObserver: ارسال نوتیفیکیشن
+- NotificationObserver: ارسال نوتیفیکیشن
 
-AuditTrailObserver: ثبت رد حسابرسی
+- AuditTrailObserver: ثبت رد حسابرسی
+
