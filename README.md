@@ -71,11 +71,11 @@
 
 ۲. پیاده‌سازی کلاس‌های استراتژی:
 
-WebChannelStrategy: منطق دریافت از وب
+- WebChannelStrategy: منطق دریافت از وب
 
-EmailChannelStrategy: منطق دریافت از ایمیل
+- EmailChannelStrategy: منطق دریافت از ایمیل
 
-SMSChannelStrategy (برای آینده): منطق دریافت از پیامک
+- SMSChannelStrategy (برای آینده): منطق دریافت از پیامک
 
 ۳. کلاس Ticket دارای فیلد channelStrategy: ChannelStrategy
 
