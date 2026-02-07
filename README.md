@@ -213,3 +213,136 @@ public Ticket createTicket(String channelType, String ticketType) {
 
 - AuditTrailObserver: ثبت رد حسابرسی
 
+
+```mermaid
+classDiagram
+    %% تعریف کلاس‌ها
+    class Ticket {
+        -String id
+        -String title
+        -String description
+        -TicketState currentState
+        -ChannelStrategy channelStrategy
+        -TicketType typeStrategy
+        -List~TicketObserver~ observers
+        +handle() void
+        +setState(TicketState state) void
+        +attach(TicketObserver observer) void
+        +detach(TicketObserver observer) void
+        +notifyObservers() void
+    }
+    
+    class TicketFactory {
+        +createTicket(String channel, String type) Ticket
+    }
+    
+    %% State Pattern
+    interface TicketState {
+        <<interface>>
+        +handle(Ticket ticket) void
+        +nextState() TicketState
+    }
+    
+    TicketState <|-- NewState : implements
+    TicketState <|-- AssignedState : implements
+    TicketState <|-- InProgressState : implements
+    TicketState <|-- ResolvedState : implements
+    TicketState <|-- ClosedState : implements
+    
+    class NewState {
+        +handle(Ticket ticket) void
+        +nextState() TicketState
+    }
+    
+    class AssignedState {
+        +handle(Ticket ticket) void
+        +nextState() TicketState
+    }
+    
+    class InProgressState {
+        +handle(Ticket ticket) void
+        +nextState() TicketState
+    }
+    
+    class ResolvedState {
+        +handle(Ticket ticket) void
+        +nextState() TicketState
+    }
+    
+    class ClosedState {
+        +handle(Ticket ticket) void
+        +nextState() TicketState
+    }
+    
+    %% Strategy Pattern - Channel
+    interface ChannelStrategy {
+        <<interface>>
+        +receive() String
+    }
+    
+    ChannelStrategy <|-- WebChannelStrategy : implements
+    ChannelStrategy <|-- EmailChannelStrategy : implements
+    
+    class WebChannelStrategy {
+        +receive() String
+    }
+    
+    class EmailChannelStrategy {
+        +receive() String
+    }
+    
+    %% Strategy Pattern - Ticket Type
+    interface TicketType {
+        <<interface>>
+        +assignDepartment() String
+        +generateResponse() String
+        +getPriority() int
+    }
+    
+    TicketType <|-- BugTicketType : implements
+    TicketType <|-- SupportTicketType : implements
+    
+    class BugTicketType {
+        +assignDepartment() String
+        +generateResponse() String
+        +getPriority() int
+    }
+    
+    class SupportTicketType {
+        +assignDepartment() String
+        +generateResponse() String
+        +getPriority() int
+    }
+    
+    %% Observer Pattern
+    interface TicketObserver {
+        <<interface>>
+        +update(TicketEvent event) void
+    }
+    
+    TicketObserver <|-- FileLogger : implements
+    TicketObserver <|-- DatabaseLogger : implements
+    TicketObserver <|-- NotificationService : implements
+    
+    class FileLogger {
+        +update(TicketEvent event) void
+    }
+    
+    class DatabaseLogger {
+        +update(TicketEvent event) void
+    }
+    
+    class NotificationService {
+        +update(TicketEvent event) void
+    }
+    
+    %% روابط بین کلاس‌ها
+    Ticket "1" --> "1" TicketState : currentState
+    Ticket "1" --> "1" ChannelStrategy : channelStrategy
+    Ticket "1" --> "1" TicketType : typeStrategy
+    Ticket "1" --> "*" TicketObserver : observers
+    TicketFactory ..> Ticket : creates
+    
+    %% وابستگی‌ها
+    TicketState ..> Ticket : dependency
+```
