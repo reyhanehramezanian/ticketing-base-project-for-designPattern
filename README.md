@@ -1,47 +1,4 @@
-classDiagram
-     class Ticket {
-        -TicketState currentState
-        -ChannelStrategy channel
-        -TicketTypeStrategy type
-        +process()
-        +setState(TicketState state)
-        +receiveRequest()
-        +handleAssignment()
-    }
 
-     class TicketState {
-        <<interface>>
-        +handle(Ticket context)
-    }
-    class NewState { +handle(Ticket context) }
-    class AssignedState { +handle(Ticket context) }
-    class InProgressState { +handle(Ticket context) }
-
-     class ChannelStrategy {
-        <<interface>>
-        +receive()
-    }
-    class WebChannel { +receive() }
-    class EmailChannel { +receive() }
-
-     class TicketTypeStrategy {
-        <<interface>>
-        +assign()
-        +respond()
-    }
-    class BugStrategy { +assign() }
-    class SupportStrategy { +assign() }
-
-     Ticket "1" *-- "1" TicketState
-    Ticket "1" *-- "1" ChannelStrategy
-    Ticket "1" *-- "1" TicketTypeStrategy
-    TicketState <|.. NewState
-    TicketState <|.. AssignedState
-    TicketState <|.. InProgressState
-    ChannelStrategy <|.. WebChannel
-    ChannelStrategy <|.. EmailChannel
-    TicketTypeStrategy <|.. BugStrategy
-    TicketTypeStrategy <|.. SupportStrategy
  
  بخش اول)تشخیص زیرمسائل و الگوها
  
@@ -260,8 +217,8 @@ public Ticket createTicket(String channelType, String ticketType) {
 ## بخش ۲: ترسیم نمودار کلاس (Class Diagram)
 
 در این بخش، ساختار نهایی سیستم پس از بازطراحی و اعمال الگوهای طراحی نمایش داده شده است. این نمودار نشان‌دهنده چگونگی جداسازی دغدغه‌ها و برقراری ارتباط بین اجزای مختلف سیستم است.
+## بخش ۲: ترسیم نمودار کلاس (Class Diagram)
 classDiagram
-    direction TR
     class Ticket {
         -TicketState currentState
         -ChannelStrategy channel
@@ -269,37 +226,18 @@ classDiagram
         +process()
         +setState(TicketState state)
     }
-
-    class TicketState {
-        <<interface>>
-        +handle(Ticket context)
-    }
-    class NewState { +handle(Ticket context) }
-    class AssignedState { +handle(Ticket context) }
-    class InProgressState { +handle(Ticket context) }
-
-    class ChannelStrategy {
-        <<interface>>
-        +receive()
-    }
-    class WebChannel { +receive() }
-    class EmailChannel { +receive() }
-
-    class TicketTypeStrategy {
-        <<interface>>
-        +assign()
-        +respond()
-    }
-    class BugStrategy { +assign() }
-    class SupportStrategy { +assign() }
-
+    class TicketState { <<interface>> }
+    class ChannelStrategy { <<interface>> }
+    class TicketTypeStrategy { <<interface>> }
+    
     Ticket "1" *-- "1" TicketState
     Ticket "1" *-- "1" ChannelStrategy
     Ticket "1" *-- "1" TicketTypeStrategy
+    
     TicketState <|.. NewState
     TicketState <|.. AssignedState
-    TicketState <|.. InProgressState
     ChannelStrategy <|.. WebChannel
     ChannelStrategy <|.. EmailChannel
     TicketTypeStrategy <|.. BugStrategy
     TicketTypeStrategy <|.. SupportStrategy
+  
