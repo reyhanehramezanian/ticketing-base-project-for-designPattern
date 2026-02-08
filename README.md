@@ -218,28 +218,4 @@ public Ticket createTicket(String channelType, String ticketType) {
 
 در این بخش، ساختار نهایی سیستم پس از بازطراحی و اعمال الگوهای طراحی نمایش داده شده است. این نمودار نشان‌دهنده چگونگی جداسازی دغدغه‌ها و برقراری ارتباط بین اجزای مختلف سیستم است.
 
- 
-
-classDiagram
-    class Ticket {
-        -TicketState currentState
-        -ChannelStrategy channel
-        -TicketTypeStrategy type
-        +process()
-        +setState(TicketState state)
-    }
-    class TicketState { <<interface>> }
-    class ChannelStrategy { <<interface>> }
-    class TicketTypeStrategy { <<interface>> }
-    
-    Ticket "1" *-- "1" TicketState
-    Ticket "1" *-- "1" ChannelStrategy
-    Ticket "1" *-- "1" TicketTypeStrategy
-    
-    TicketState <|.. NewState
-    TicketState <|.. AssignedState
-    ChannelStrategy <|.. WebChannel
-    ChannelStrategy <|.. EmailChannel
-    TicketTypeStrategy <|.. BugStrategy
-    TicketTypeStrategy <|.. SupportStrategy
-  
+![Class Diagram](./project%20ood2/class-diagram.png)
