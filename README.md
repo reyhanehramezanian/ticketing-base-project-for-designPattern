@@ -1,3 +1,48 @@
+classDiagram
+     class Ticket {
+        -TicketState currentState
+        -ChannelStrategy channel
+        -TicketTypeStrategy type
+        +process()
+        +setState(TicketState state)
+        +receiveRequest()
+        +handleAssignment()
+    }
+
+     class TicketState {
+        <<interface>>
+        +handle(Ticket context)
+    }
+    class NewState { +handle(Ticket context) }
+    class AssignedState { +handle(Ticket context) }
+    class InProgressState { +handle(Ticket context) }
+
+     class ChannelStrategy {
+        <<interface>>
+        +receive()
+    }
+    class WebChannel { +receive() }
+    class EmailChannel { +receive() }
+
+     class TicketTypeStrategy {
+        <<interface>>
+        +assign()
+        +respond()
+    }
+    class BugStrategy { +assign() }
+    class SupportStrategy { +assign() }
+
+     Ticket "1" *-- "1" TicketState
+    Ticket "1" *-- "1" ChannelStrategy
+    Ticket "1" *-- "1" TicketTypeStrategy
+    TicketState <|.. NewState
+    TicketState <|.. AssignedState
+    TicketState <|.. InProgressState
+    ChannelStrategy <|.. WebChannel
+    ChannelStrategy <|.. EmailChannel
+    TicketTypeStrategy <|.. BugStrategy
+    TicketTypeStrategy <|.. SupportStrategy
+ 
  بخش اول)تشخیص زیرمسائل و الگوها
  
  ۱. زیرمسئله: مدیریت حالت‌ها
