@@ -217,7 +217,9 @@ public Ticket createTicket(String channelType, String ticketType) {
 ## بخش ۲: ترسیم نمودار کلاس (Class Diagram)
 
 در این بخش، ساختار نهایی سیستم پس از بازطراحی و اعمال الگوهای طراحی نمایش داده شده است. این نمودار نشان‌دهنده چگونگی جداسازی دغدغه‌ها و برقراری ارتباط بین اجزای مختلف سیستم است.
-## بخش ۲: ترسیم نمودار کلاس (Class Diagram)
+
+ 
+
 classDiagram
     class Ticket {
         -TicketState currentState
