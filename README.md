@@ -215,21 +215,16 @@ public Ticket createTicket(String channelType, String ticketType) {
 ## بخش ۲: ترسیم نمودار کلاس (Class Diagram)
 
 در این بخش، ساختار نهایی سیستم پس از بازطراحی و اعمال الگوهای طراحی نمایش داده شده است. این نمودار نشان‌دهنده چگونگی جداسازی دغدغه‌ها و برقراری ارتباط بین اجزای مختلف سیستم است.
-
 classDiagram
+    direction TR
     class Ticket {
-        -String ticketId
-        -String description
         -TicketState currentState
         -ChannelStrategy channel
         -TicketTypeStrategy type
-        -List~TicketObserver~ observers
-        +setState(TicketState state)
-        +receive()
         +process()
-        +attach(TicketObserver o)
-        +notifyObservers(String message)
+        +setState(TicketState state)
     }
+
     class TicketState {
         <<interface>>
         +handle(Ticket context)
@@ -237,43 +232,29 @@ classDiagram
     class NewState { +handle(Ticket context) }
     class AssignedState { +handle(Ticket context) }
     class InProgressState { +handle(Ticket context) }
-    class ResolvedState { +handle(Ticket context) }
-    class ClosedState { +handle(Ticket context) }
+
     class ChannelStrategy {
         <<interface>>
-        +receiveRequest() String
+        +receive()
     }
-    class WebChannel { +receiveRequest() String }
-    class EmailChannel { +receiveRequest() String }
+    class WebChannel { +receive() }
+    class EmailChannel { +receive() }
+
     class TicketTypeStrategy {
         <<interface>>
-        +assignDepartment() String
-        +generateResponse() String
+        +assign()
+        +respond()
     }
-    class BugStrategy { +assignDepartment() String }
-    class SupportStrategy { +assignDepartment() String }
-    class TicketFactory {
-        +createTicket(String channelType, String ticketType) Ticket
-    }
-    class TicketObserver {
-        <<interface>>
-        +update(String message)
-    }
-    class LoggerObserver { +update(String message) }
-    class DatabaseObserver { +update(String message) }
-    Ticket "1" *-- "1" TicketState : has a
-    Ticket "1" *-- "1" ChannelStrategy : uses
-    Ticket "1" *-- "1" TicketTypeStrategy : follows
-    Ticket "1" o-- "*" TicketObserver : notifies
+    class BugStrategy { +assign() }
+    class SupportStrategy { +assign() }
+
+    Ticket "1" *-- "1" TicketState
+    Ticket "1" *-- "1" ChannelStrategy
+    Ticket "1" *-- "1" TicketTypeStrategy
     TicketState <|.. NewState
     TicketState <|.. AssignedState
     TicketState <|.. InProgressState
-    TicketState <|.. ResolvedState
-    TicketState <|.. ClosedState
     ChannelStrategy <|.. WebChannel
     ChannelStrategy <|.. EmailChannel
     TicketTypeStrategy <|.. BugStrategy
     TicketTypeStrategy <|.. SupportStrategy
-    TicketObserver <|.. LoggerObserver
-    TicketObserver <|.. DatabaseObserver
-    TicketFactory ..> Ticket : creates
