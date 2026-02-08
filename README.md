@@ -14,7 +14,7 @@
 
 الگوی State برای این مسئله مناسب است زیرا رفتار سیستم به شدت وابسته به حالت فعلی شیء است و هر حالت منطق پردازش خاص خود را دارد.
 
-دلیل اتخاب :
+دلیل انتخاب :
 
 ۱. حذف شرط‌های پیچیده: جایگزینی if-else های تودرتو با اشیاء حالت مستقل.
 
@@ -212,3 +212,54 @@ public Ticket createTicket(String channelType, String ticketType) {
 - NotificationObserver: ارسال نوتیفیکیشن
 
 - AuditTrailObserver: ثبت رد حسابرسی
+
+classDiagram
+    class Ticket {
+        -String ticketId
+        -String description
+        -TicketState currentState
+        -ChannelStrategy channel
+        -TicketTypeStrategy type
+        +setState(TicketState state)
+        +process()
+        +receive()
+    }
+
+    class TicketState {
+        <<interface>>
+        +handle(Ticket context)
+    }
+    class NewState { +handle(Ticket context) }
+    class AssignedState { +handle(Ticket context) }
+    class ClosedState { +handle(Ticket context) }
+
+    class ChannelStrategy {
+        <<interface>>
+        +receive() String
+    }
+    class WebChannel { +receive() String }
+    class EmailChannel { +receive() String }
+
+    class TicketTypeStrategy {
+        <<interface>>
+        +assignDepartment() String
+        +generateResponse() String
+    }
+    class BugStrategy { +assignDepartment() String }
+    class SupportStrategy { +assignDepartment() String }
+
+    class TicketFactory {
+        +createTicket(String channel, String type) Ticket
+    }
+
+    Ticket "1" *-- "1" TicketState
+    Ticket "1" *-- "1" ChannelStrategy
+    Ticket "1" *-- "1" TicketTypeStrategy
+    TicketFactory ..> Ticket : creates
+    TicketState <|.. NewState
+    TicketState <|.. AssignedState
+    TicketState <|.. ClosedState
+    ChannelStrategy <|.. WebChannel
+    ChannelStrategy <|.. EmailChannel
+    TicketTypeStrategy <|.. BugStrategy
+    TicketTypeStrategy <|.. SupportStrategy
