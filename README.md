@@ -219,3 +219,7 @@ public Ticket createTicket(String channelType, String ticketType) {
 در این بخش، ساختار نهایی سیستم پس از بازطراحی و اعمال الگوهای طراحی نمایش داده شده است. این نمودار نشان‌دهنده چگونگی جداسازی دغدغه‌ها و برقراری ارتباط بین اجزای مختلف سیستم است.
 
 ![Class Diagram](./project%20ood2/class-diagram.png)
+![Uploading image.png…]()
+
+
+
