@@ -69,20 +69,18 @@
 ۴. پایستگی کم: کاهش وابستگی بین کلاس‌ها.
 
 روش اعمال :
+ایجاد اینترفیس ChannelProcessingStrategy با متد processChannel(): void
 
-۱. ایجاد اینترفیس ChannelStrategy با متد receive(): String
+کلاس‌های پیاده‌سازی:
+- WebChannelStrategy: 
+  void processChannel() {
+    System.out.println("Received from web");
+  }
 
-۲. پیاده‌سازی کلاس‌های استراتژی:
-
-- WebChannelStrategy: منطق دریافت از وب
-
-- EmailChannelStrategy: منطق دریافت از ایمیل
-
-- SMSChannelStrategy (برای آینده): منطق دریافت از پیامک
-
-۳. کلاس Ticket دارای فیلد channelStrategy: ChannelStrategy
-
-۴. استراتژی مناسب در زمان ایجاد تیکت تزریق می‌شود.
+- EmailChannelStrategy:
+  void processChannel() {
+    System.out.println("Received from email");
+  }channelStrategy: ChannelStrategy
 
 
 ۳. زیرمسئله: پردازش انواع مختلف تیکت
@@ -129,91 +127,29 @@
   
 ۳. کلاس Ticket دارای فیلد typeStrategy: TicketTypeStrategy
 
-
 ۴. زیرمسئله: ایجاد و ساخت شیء تیکت
 
- فرآیند ایجاد تیکت پیچیده است و شامل:
-
--انتخاب استراتژی کانال مناسب
-
--انتخاب استراتژی نوع مناسب
-
--تنظیم حالت اولیه
-
--مقداردهی اولیه سایر ویژگی‌ها
+-در الگوی State، هر بار که حالت تغییر می‌کند، نیاز به ایجاد شیء State جدید داریم.
+-می‌توانیم از Factory Pattern برای مدیریت ایجاد Stateها استفاده کنیم.
 
 الگوی انتخابی: 
 
-الگوی Factory Method مناسب است زیرا منطق ساخت شیء پیچیده است و ممکن است انواع مختلفی از تیکت‌ها نیاز به ساخت داشته باشند.
+ Factory 
 
-دلیل انتخاب :
+دلیل انتخاب:
 
-۱. کپسوله‌سازی: پنهان‌سازی منطق پیچیده ساخت.
-
-۲. انعطاف‌پذیری: امکان ایجاد انواع مختلف تیکت بدون تغییر کد کلاینت.
-
-۳. تک‌مسئولیتی: جداسازی منطق ساخت از منطق استفاده.
-
-۴. قابلیت گسترش: افزودن نوع جدید تیکت بدون تغییر Factory
+۱. متمرکز کردن منطق ایجاد Stateها.
+۲. امکان تغییر نحوه ایجاد Stateها بدون تغییر کد مصرف‌کننده.
+۳. امکان کش کردن (caching) Stateها اگر immutable باشند.
 
 روش اعمال :
 
-۱. ایجاد کلاس TicketFactory با متد:
+۱. ایجاد کلاس StateFactory
+۲. متدهای:
 
+   - createState(String stateName): TicketState
+   - یا متدهای جداگانه برای هر State
 
- 
-public Ticket createTicket(String channelType, String ticketType) {
-
-}
-
-۲. در صورت نیاز به ایجاد خانواده‌ای از تیکت‌های مرتبط، از Abstract Factory Pattern استفاده شود.
-
-۵. زیرمسئله: ثبت رویدادها و اطلاع‌رسانی
-
-سیستم باید پس از هر تغییر مهم در وضعیت تیکت:
-
--رویداد را ثبت کند.
-
--به سیستم‌های دیگر اطلاع دهد.
-
--امکان افزودن سیستم‌های ثبت جدید را فراهم کند.
-
-الگوی انتخابی: 
-
-الگوی Observer مناسب است زیرا چندین سیستم ممکن است نیاز به اطلاع از تغییرات تیکت داشته باشند.
-
-دلیل انتخاب :
-
-۱. جدا کردن ناهمگام: جدا کردن فرستنده رویداد از دریافت‌کنندگان.
-
-۲. قابلیت گسترش: افزودن Observer جدید بدون تغییر Subject
-
-۳. یک-به-چند: یک رویداد می‌تواند به چندین سیستم اطلاع دهد.
-
-۴. کاهش وابستگی: Subject و Observer وابستگی کمی به هم دارند.
-
-روش اعمال :
-
-۱. ایجاد اینترفیس TicketObserver با متد update(TicketEvent event)
-
-۲. ایجاد کلاس Ticket به عنوان Subject با قابلیت:
-
-
-- attachObserver(TicketObserver observer)
-
-- detachObserver(TicketObserver observer)
-
-- notifyObservers(TicketEvent event)
-
-۳. پیاده‌سازی Observer‌های مختلف:
-
-- FileLoggerObserver: ثبت در فایل log
-
-- DatabaseLoggerObserver: ثبت در پایگاه داده
-
-- NotificationObserver: ارسال نوتیفیکیشن
-
-- AuditTrailObserver: ثبت رد حسابرسی
 ## بخش ۲: ترسیم نمودار کلاس (Class Diagram)
 
 در این بخش، ساختار نهایی سیستم پس از بازطراحی و اعمال الگوهای طراحی نمایش داده شده است. این نمودار نشان‌دهنده چگونگی جداسازی دغدغه‌ها و برقراری ارتباط بین اجزای مختلف سیستم است.
