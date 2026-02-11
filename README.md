@@ -30,7 +30,7 @@
 
 •	روش اعمال: کلاس TicketFactory را ایجاد می‌کنیم که متدی برای تولید تیکت بر اساس کانال ورودی دارد و اشیاء لازم را نمونه‌سازی می‌کند.
 
-# بخش 2) ترسیم Diagram Class 
+# بخش دوم) ترسیم Diagram Class 
 
 <img width="1838" height="1074" alt="class-diagram" src="https://github.com/user-attachments/assets/d99ddf3c-3e60-4bda-8cd9-1be43c3066ba" />
 
